@@ -6,3 +6,5 @@
 __pycache__/keras_PPO.cpython-37.pyc
 *.jpg
 *.h5
+*.xml
+*.pyc
