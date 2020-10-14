@@ -150,9 +150,10 @@ class PPO:
 
         return discount_reward
 
-    def GAE_reward(self):
+    def Advantage(self):
         """
         参考网站为：https://www.youtube.com/watch?v=WxQfQW48A4A&feature=youtu.be
+        使用GAE算法
         具体算法如下所示：
         1. mask is 0, if the state is terminal, otherwise is 1
         2. init gae=0, look backward from last step
@@ -200,9 +201,9 @@ class PPO:
         # discount_reward = tf.convert_to_tensor(discount_reward, dtype=tf.float32)
 
         # get GAE reward
-        GAE_reward = self.GAE_reward()
+        advantage = self.Advantage()
         # print(GAE_reward)
-        tf_GAE_reward = tf.convert_to_tensor(GAE_reward, dtype=tf.float32)
+        tf_advantage = tf.convert_to_tensor(advantage, dtype=tf.float32)
         # tf_GAE_reward = tf.squeeze(tf_GAE_reward)
         # print(tf_GAE_reward)
 
@@ -212,7 +213,7 @@ class PPO:
             # tf_v = tf.squeeze(tf_v)
             # print(tf_GAE_reward)
             # print(tf_v)
-            y = tf_v - tf_GAE_reward
+            y = tf_v - tf_advantage
             # tf_v = tf.convert_to_tensor(tf_v, dtype=tf.double)
             # print(tf_v)
             # tf_v = tf.convert_to_tensor(v, dtype=tf.float64)
@@ -231,7 +232,7 @@ class PPO:
         with tf.GradientTape() as tape:
             ratio = self.new_actor(state_batch) / (self.old_actor(state_batch) + 1e-10)
             # print(ratio)
-            tf_advantage = tf_GAE_reward - tf_v
+            tf_advantage = tf_advantage - tf_v
             clip = tf.clip_by_value(ratio, clip_value_min=1. - self.epsilon, clip_value_max=1. + self.epsilon)
             surrogate1 = ratio * tf_advantage
             surrogate2 = clip * tf_advantage
