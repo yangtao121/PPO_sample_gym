@@ -158,7 +158,7 @@ class PPO:
         2. init gae=0, look backward from last step
         3. delta = r + gamma * V(s') * mask - V(s)  |aka advantage
         4. gae = delta + gamma * lambda * mask * gae |moving average smoothing
-        5. return(s,a) = gae + V(s)  |add value of state back to it.
+        5. return(s,a) = gae |add value of state back to it.
         :return:
         """
         gae = 0
