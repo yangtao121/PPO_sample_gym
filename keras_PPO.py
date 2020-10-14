@@ -242,6 +242,9 @@ class PPO:
             zip(actor_grad, self.new_actor.trainable_variables)
         )
 
+        if self.store_counter % 20 == 0:
+            self.update_old_act()
+
         # 计算优势函数（PPO1）
         # 存在问题
         # v = self.get_v(self.state_batch)
