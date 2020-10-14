@@ -166,9 +166,9 @@ class PPO:
         for i in reversed(range(self.batch_size)):
             V_next = self.get_v(self.next_state_batch[i])
             V = self.get_v(self.state_batch[i])
-            delta = self.reward_batch[i] + self.GAMA * self.lambada * V_next * self.maks_flag_batch[i] - V
+            delta = self.reward_batch[i] + self.GAMA * V_next * self.maks_flag_batch[i] - V
             gae = delta + self.GAMA * self.lambada * self.maks_flag_batch[i] * gae
-            GAE_reward[i] = gae + V
+            GAE_reward[i] = gae
             # print(GAE_reward[i])
 
         return GAE_reward
