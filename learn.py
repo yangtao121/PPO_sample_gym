@@ -15,7 +15,7 @@ lower_bound = env.action_space.low[0]
 
 total_episodes = 300
 
-RL = PPO(s_dims, a_dims, upper_bound, lower_bound, batch_size=20)
+RL = PPO(s_dims, a_dims, upper_bound, lower_bound, batch_size=2)
 
 ep_reward_list = []
 avg_reward_list = []
@@ -41,7 +41,7 @@ for ep in range(total_episodes):
 
         if learn_flag:
             RL.learn()
-            RL.update_old_act()
+            # RL.update_old_act()
 
         if done:
             break
