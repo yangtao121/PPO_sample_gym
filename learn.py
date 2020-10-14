@@ -13,9 +13,9 @@ a_dims = env.action_space.shape[0]
 upper_bound = env.action_space.high[0]
 lower_bound = env.action_space.low[0]
 
-total_episodes = 300
+total_episodes = 100
 
-RL = PPO(s_dims, a_dims, upper_bound, lower_bound, batch_size=2)
+RL = PPO(s_dims, a_dims, upper_bound, lower_bound, batch_size=20)
 
 ep_reward_list = []
 avg_reward_list = []
@@ -41,7 +41,7 @@ for ep in range(total_episodes):
 
         if learn_flag:
             RL.learn()
-            # RL.update_old_act()
+            RL.update_old_act()
 
         if done:
             break
@@ -54,23 +54,23 @@ for ep in range(total_episodes):
     avg_reward_list.append(avg_reward)
 
     # 画出回合图
-    # episode_state = np.array(episode_state)
-    # episode_action = np.array(episode_action)
-    # plt.subplot(221)
-    # plt.plot(episode_state[:, 0])
-    # plt.xlabel('theta')
-    # plt.subplot(222)
-    # plt.plot(episode_state[:, 1])
-    # plt.xlabel('theta_dot')
-    # plt.subplot(223)
-    # plt.plot(episode_state[:, 2])
-    # plt.xlabel("action")
-    # plt.subplot(224)
-    # plt.plot(episode_action)
-    #
-    # fig_name = "./fig/" + str(ep) + ".jpg"
-    # plt.savefig(fig_name)
-    # plt.close()
+    episode_state = np.array(episode_state)
+    episode_action = np.array(episode_action)
+    plt.subplot(221)
+    plt.plot(episode_state[:, 0])
+    plt.xlabel('theta')
+    plt.subplot(222)
+    plt.plot(episode_state[:, 1])
+    plt.xlabel('theta_dot')
+    plt.subplot(223)
+    plt.plot(episode_state[:, 2])
+    plt.xlabel("action")
+    plt.subplot(224)
+    plt.plot(episode_action)
+
+    fig_name = "./fig/" + str(ep) + ".jpg"
+    plt.savefig(fig_name)
+    plt.close()
 
 RL.save_model()
 
