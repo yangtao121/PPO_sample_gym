@@ -1,2 +1,2 @@
 # PPO_sample_gym
-PPO implemeted by keras
+PPO implemented by keras
