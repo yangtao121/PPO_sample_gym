@@ -231,8 +231,7 @@ class PPO:
 
         # update actor
         with tf.GradientTape() as tape:
-            ratio = tf.clip_by_value(self.new_actor(state_batch),self.action_lower_bound,self.action_upper_bound) / tf.clip_by_value((self.old_actor(state_batch) + 1e-10),self.action_lower_bound,self.action_upper_bound)
-            # print(ratio)
+            ratio = self.new_actor(state_batch) / (self.old_actor(state_batch) + 1e-10)            # print(ratio)
             clip = tf.clip_by_value(ratio, clip_value_min=1. - self.epsilon, clip_value_max=1. + self.epsilon)
             surrogate1 = ratio * tf_advantage
             surrogate2 = clip * tf_advantage
