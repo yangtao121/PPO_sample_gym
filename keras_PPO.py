@@ -57,7 +57,7 @@ class PPO:
 
     def actor_net(self):
         # 初始化权值
-        last_init = tf.random_uniform_initializer(minval=-0.003, maxval=0.003)
+        last_init = tf.random_uniform_initializer(minval=-1, maxval=1)
 
         inputs = layers.Input(shape=(self.s_dims,))
         # PPO算法速度优于DDPG可以设置大一点的网络
