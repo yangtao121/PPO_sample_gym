@@ -89,7 +89,7 @@ class PPO:
         sample_actions = sample_actions.numpy()
         legal_action = np.clip(sample_actions, self.action_lower_bound, self.action_upper_bound)
         # self.store_counter += 1
-        return [np.squeeze(legal_action)]
+        return [np.squeeze(legal_action) * self.action_upper_bound]
 
     '''
     store函数返回当前batch是否已满，能不能进行网络的更新
@@ -163,16 +163,16 @@ class PPO:
         :return:
         """
         gae = 0
-        GAE_reward = np.zeros((self.batch_size, 1))
+        advantage = np.zeros((self.batch_size, 1))
         for i in reversed(range(self.batch_size)):
             V_next = self.get_v(self.next_state_batch[i])
             V = self.get_v(self.state_batch[i])
             delta = self.reward_batch[i] + self.GAMA * V_next * self.maks_flag_batch[i] - V
             gae = delta + self.GAMA * self.lambada * self.maks_flag_batch[i] * gae
-            GAE_reward[i] = gae
+            advantage[i] = gae
             # print(GAE_reward[i])
 
-        return GAE_reward
+        return advantage
 
     def learn(self):
         """
@@ -242,8 +242,8 @@ class PPO:
             zip(actor_grad, self.new_actor.trainable_variables)
         )
 
-        if self.store_counter % 20 == 0:
-            self.update_old_act()
+        # if self.store_counter % 20 == 0:
+        #     self.update_old_act()
 
         # 计算优势函数（PPO1）
         # 存在问题
