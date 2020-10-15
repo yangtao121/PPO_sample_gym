@@ -51,13 +51,14 @@ class PPO:
         # actor net
         self.new_actor = self.actor_net()
         self.old_actor = self.actor_net()
+        self.old_actor.set_weights(self.new_actor.get_weights())
 
         # critic net
         self.critic = self.critic_net()
 
     def actor_net(self):
         # 初始化权值
-        last_init = tf.random_uniform_initializer(minval=-0.5, maxval=0.5)
+        last_init = tf.random_uniform_initializer(minval=-0.1, maxval=0.1)
 
         inputs = layers.Input(shape=(self.s_dims,))
         # PPO算法速度优于DDPG可以设置大一点的网络
