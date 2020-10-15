@@ -17,7 +17,7 @@ lower_bound = env.action_space.low[0]
 # print(s_dims)
 total_episodes = 100
 
-RL = PPO(a_dims, s_dims, upper_bound,batch_size=20)
+RL = PPO(a_dims, s_dims, upper_bound,batch_size=5)
 
 ep_reward_list = []
 avg_reward_list = []
