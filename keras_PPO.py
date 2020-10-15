@@ -57,7 +57,7 @@ class PPO:
 
     def actor_net(self):
         # 初始化权值
-        last_init = tf.random_uniform_initializer(minval=-1, maxval=1)
+        last_init = tf.random_uniform_initializer(minval=-0.5, maxval=0.5)
 
         inputs = layers.Input(shape=(self.s_dims,))
         # PPO算法速度优于DDPG可以设置大一点的网络
@@ -67,7 +67,7 @@ class PPO:
         out = layers.BatchNormalization()(out)
         outputs = layers.Dense(self.a_dims, activation="tanh", kernel_initializer=last_init)(out)
 
-        # outputs = outputs * self.action_upper_bound
+        outputs = outputs * self.action_upper_bound
         model = tf.keras.Model(inputs, outputs)
 
         return model
@@ -89,7 +89,7 @@ class PPO:
         sample_actions = sample_actions.numpy()
         legal_action = np.clip(sample_actions, self.action_lower_bound, self.action_upper_bound)
         # self.store_counter += 1
-        return [np.squeeze(legal_action) * self.action_upper_bound]
+        return [np.squeeze(legal_action)]
 
     '''
     store函数返回当前batch是否已满，能不能进行网络的更新
